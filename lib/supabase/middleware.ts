@@ -34,6 +34,8 @@ export async function updateSession(request: NextRequest) {
   // Middleware only runs for /admin/* (see matcher). The marketing site is public.
   const path = request.nextUrl.pathname;
   const isLoginRoute = path === "/admin/login";
+  // The OAuth callback must stay reachable while the user is still signed out.
+  const isAuthFlow = path.startsWith("/admin/auth");
 
   const redirectTo = (pathname: string) => {
     const url = request.nextUrl.clone();
@@ -42,7 +44,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   };
 
-  if (!user && !isLoginRoute) {
+  if (!user && !isLoginRoute && !isAuthFlow) {
     return redirectTo("/admin/login");
   }
 

@@ -1,5 +1,6 @@
 import { login } from "./actions";
 import { Logo } from "@/components/logo";
+import { GoogleSignInButton } from "@/components/google-signin-button";
 
 export default function LoginPage({
   searchParams,
@@ -59,6 +60,14 @@ export default function LoginPage({
               Sign In
             </button>
           </form>
+
+          <div className="my-5 flex items-center gap-3">
+            <span className="h-px flex-1 bg-zinc-200" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">or</span>
+            <span className="h-px flex-1 bg-zinc-200" />
+          </div>
+
+          <GoogleSignInButton />
         </div>
         <p className="mt-6 text-center text-xs text-white/40">
           Authorized personnel only.
