@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { sendLeadNotification } from "@/lib/notify";
 
 export type LeadInput = {
   firstName: string;
@@ -37,5 +38,21 @@ export async function submitLead(
   });
 
   if (error) return { ok: false, error: error.message };
+
+  // Fire the staff email alert. Never let an email failure break lead capture.
+  try {
+    await sendLeadNotification({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      phone: data.phone,
+      email: data.email,
+      damageType: data.damageType,
+      carrier: data.carrier,
+      message: data.message,
+    });
+  } catch (err) {
+    console.error("Lead notification email failed:", err);
+  }
+
   return { ok: true };
 }
