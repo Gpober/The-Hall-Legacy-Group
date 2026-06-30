@@ -16,7 +16,7 @@ export function StatCard({
     rose: "text-rose-600",
   };
   return (
-    <div className="card p-5">
+    <div className="card flex flex-col items-center p-5 text-center">
       <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">
         {label}
       </p>
