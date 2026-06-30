@@ -69,18 +69,27 @@
     border-bottom:1px solid rgba(255,255,255,.08);
   }
   .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
-  .brand{display:flex;align-items:center;gap:14px}
+  .brand{display:flex;align-items:center;gap:14px;min-width:0}
   .logo-badge{
     width:42px;height:42px;border:2px solid var(--gold);border-radius:9px;
     display:grid;place-items:center;color:var(--gold);font-family:var(--serif);
-    font-weight:800;font-size:15px;letter-spacing:.02em;
+    font-weight:800;font-size:15px;letter-spacing:.02em;flex:none;
   }
-  .brand-text strong{color:#fff;font-family:var(--sans);font-weight:800;font-size:16px;letter-spacing:.06em;display:block;line-height:1.1}
-  .brand-text span{color:rgba(255,255,255,.55);font-size:9.5px;font-weight:600;letter-spacing:.28em}
+  .brand-text strong{color:#fff;font-family:var(--sans);font-weight:800;font-size:16px;letter-spacing:.06em;display:block;line-height:1.1;white-space:nowrap}
+  .brand-text span{color:rgba(255,255,255,.55);font-size:9.5px;font-weight:600;letter-spacing:.28em;white-space:nowrap}
   .nav-links{display:flex;align-items:center;gap:34px}
   .nav-links a{color:rgba(255,255,255,.78);font-size:13.5px;font-weight:600;letter-spacing:.02em}
   .nav-links a:hover{color:var(--gold-soft)}
   .nav-right{display:flex;align-items:center;gap:24px}
+  .menu-cta{display:none}
+  .menu-toggle{
+    display:none;width:44px;height:44px;border:none;background:transparent;cursor:pointer;
+    flex-direction:column;justify-content:center;align-items:center;gap:5px;flex:none;
+  }
+  .menu-toggle span{display:block;width:24px;height:2.5px;background:#fff;border-radius:2px;transition:.25s ease}
+  header.open .menu-toggle span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+  header.open .menu-toggle span:nth-child(2){opacity:0}
+  header.open .menu-toggle span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
 
   /* ---------- Hero ---------- */
   .hero{
@@ -194,18 +203,44 @@
 
   /* ---------- Responsive ---------- */
   @media(max-width:900px){
-    .nav-links{display:none}
+    .menu-toggle{display:flex}
+    .desktop-cta{display:none}
+    .menu-cta{display:inline-flex}
+    .nav-right{gap:6px}
+    .nav-links{
+      position:absolute;top:74px;left:0;right:0;
+      flex-direction:column;align-items:stretch;gap:0;
+      background:var(--green-900);border-top:1px solid rgba(255,255,255,.08);
+      box-shadow:0 24px 40px -20px rgba(0,0,0,.6);
+      max-height:0;overflow:hidden;transition:max-height .3s ease;
+    }
+    header.open .nav-links{max-height:380px}
+    .nav-links a{padding:16px 24px;font-size:15px;border-bottom:1px solid rgba(255,255,255,.07)}
+    .nav-links .menu-cta{margin:16px 24px;padding:15px;border-bottom:none;justify-content:center}
     .process-grid{grid-template-columns:1fr;gap:40px}
     .cards{grid-template-columns:repeat(2,1fr)}
     .contact-grid{grid-template-columns:1fr;gap:44px;padding:72px 0}
   }
   @media(max-width:600px){
-    .stats-grid{grid-template-columns:1fr;gap:24px;text-align:left}
+    .wrap{padding:0 18px}
+    .brand-text span{font-size:8.5px;letter-spacing:.22em}
+    .stats-grid{grid-template-columns:1fr;gap:22px;text-align:left}
+    .trust-grid{flex-direction:column;align-items:flex-start;gap:14px}
     .cards{grid-template-columns:1fr}
     .row2{grid-template-columns:1fr}
-    .section{padding:68px 0}
-    .hero-inner{padding:70px 0 80px}
-    .hero-cta .btn{flex:1}
+    .section{padding:62px 0}
+    .hero-inner{padding:60px 0 72px}
+    .hero h1{font-size:clamp(36px,11vw,52px)}
+    .hero p{font-size:16.5px}
+    .hero-cta{flex-direction:column;align-items:stretch}
+    .hero-cta .btn{width:100%}
+    .why,.form-card{padding:28px 22px}
+    .card{padding:32px 26px}
+    .contact-grid{padding:60px 0}
+  }
+  @media(max-width:380px){
+    .brand-text strong{font-size:14px}
+    .logo-badge{width:38px;height:38px;font-size:13px}
   }
 </style>
 </head>
@@ -222,13 +257,17 @@
       </span>
     </a>
     <div class="nav-right">
-      <nav class="nav-links">
+      <nav class="nav-links" id="navMenu">
         <a href="#process">Our Process</a>
         <a href="#services">Services</a>
         <a href="#why">Why Us</a>
         <a href="#contact">Contact</a>
+        <a href="#contact" class="btn btn-gold menu-cta">Free Inspection</a>
       </nav>
-      <a href="#contact" class="btn btn-gold">Free Inspection</a>
+      <a href="#contact" class="btn btn-gold desktop-cta">Free Inspection</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
@@ -350,12 +389,12 @@
       <p class="lead">Whether your claim just opened or you've already received a scope, Hall Legacy Group can step in at any point. Reach out today — no obligation, no pressure.</p>
       <div class="contact-line">
         <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8 9.8a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z"/></svg></div>
-        <div><div class="cl">Phone</div><div class="cv">(555) 000-0000</div></div>
+        <div><div class="cl">Phone</div><a class="cv" href="tel:+15550000000">(555) 000-0000</a></div>
       </div>
-      <div class="contact-line">
+      <a class="contact-line" href="mailto:info@halllegacygroup.com">
         <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg></div>
         <div><div class="cl">Email</div><div class="cv">info@halllegacygroup.com</div></div>
-      </div>
+      </a>
     </div>
 
     <div class="form-card">
@@ -414,6 +453,20 @@
 
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
+
+  var header = document.querySelector('header');
+  var toggle = document.getElementById('menuToggle');
+  var navMenu = document.getElementById('navMenu');
+  function setMenu(open){
+    header.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  toggle.addEventListener('click', function(){ setMenu(!header.classList.contains('open')); });
+  navMenu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ setMenu(false); });
+  });
+
   var form = document.getElementById('inspectionForm');
   form.addEventListener('submit', function(e){
     e.preventDefault();
