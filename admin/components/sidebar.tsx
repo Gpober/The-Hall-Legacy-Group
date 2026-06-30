@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "./logo";
+import { logout } from "@/app/login/actions";
 
 const NAV = [
   { href: "/", label: "Dashboard", icon: "M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" },
@@ -67,7 +68,7 @@ export function Sidebar({ email }: { email: string }) {
         </nav>
         <div className="mt-auto border-t border-white/10 px-5 py-4">
           <p className="truncate text-xs text-white/50">{email}</p>
-          <form action="/auth/signout" method="post" className="mt-2">
+          <form action={logout} className="mt-2">
             <button className="text-xs font-semibold text-gold-soft hover:text-gold-bright">
               Sign out
             </button>

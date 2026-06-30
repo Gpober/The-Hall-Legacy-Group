@@ -21,12 +21,40 @@ Add these two variables (Production, Preview, and Development):
 | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | `https://wgvlgzvfldncdogslvng.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `sb_publishable_dn5B53WCi1B1jVrFKmLObQ_oiWprn9I` |
+| `NEXT_PUBLIC_BASE_PATH` | `/admin`  ← only while serving from `thehalllegacygrp.com/admin` |
 
 These are public keys (safe in the browser). All data access is protected by
 Row Level Security + an admin allowlist in Supabase.
 
-Click **Deploy**. You'll get a `*.vercel.app` URL — log in there to confirm it
-works before attaching the domain.
+Click **Deploy**. You'll get a `*.vercel.app` URL. With `NEXT_PUBLIC_BASE_PATH=/admin`
+the app lives at `…vercel.app/admin` (the bare root will 404 — that's expected).
+
+## 2b. Serve it at `thehalllegacygrp.com/admin` (no new DNS)
+
+Because the main site is already on Vercel, you can expose the CRM under a path
+on the existing domain with a rewrite — no DNS change needed today.
+
+In the **main site's** Vercel project, add a `vercel.json` (or merge into the
+existing one) that proxies `/admin` to this CRM deployment:
+
+```json
+{
+  "rewrites": [
+    { "source": "/admin", "destination": "https://YOUR-CRM.vercel.app/admin" },
+    { "source": "/admin/:path*", "destination": "https://YOUR-CRM.vercel.app/admin/:path*" }
+  ]
+}
+```
+
+Replace `YOUR-CRM` with this project's actual Vercel URL. Redeploy the main
+site. The CRM is then reachable at `https://thehalllegacygrp.com/admin`.
+
+### Moving to the `admin.` subdomain later (one flip, no refactor)
+
+1. Remove the `NEXT_PUBLIC_BASE_PATH` env var from this project and redeploy
+   (app now serves at root).
+2. Remove the `/admin` rewrite from the main site project.
+3. Follow step 3 below to attach `admin.thehalllegacygrp.com`.
 
 ## 3. Attach the custom domain
 
