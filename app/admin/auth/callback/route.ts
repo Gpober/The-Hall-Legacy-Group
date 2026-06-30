@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 // OAuth (Google) redirect lands here. Exchange the code for a session,
-// then send the user into the CRM.
+// stash the Google refresh token for Calendar sync, then enter the CRM.
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
@@ -10,8 +10,22 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      const refreshToken = data.session?.provider_refresh_token;
+      const user = data.session?.user;
+      if (refreshToken && user) {
+        // Persist the refresh token so we can mint Calendar access tokens later.
+        await supabase.from("google_tokens").upsert(
+          {
+            user_id: user.id,
+            email: user.email,
+            refresh_token: refreshToken,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "user_id" }
+        );
+      }
       return NextResponse.redirect(`${origin}${next}`);
     }
   }

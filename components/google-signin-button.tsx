@@ -15,6 +15,10 @@ export function GoogleSignInButton() {
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/admin/auth/callback`,
+        // Also request Calendar access so CRM appointments can sync, and ask
+        // for offline access so we receive a refresh token.
+        scopes: "https://www.googleapis.com/auth/calendar.events",
+        queryParams: { access_type: "offline", prompt: "consent" },
       },
     });
     if (error) {
