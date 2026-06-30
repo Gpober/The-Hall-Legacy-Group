@@ -194,6 +194,8 @@
   textarea{resize:vertical;min-height:96px}
   .form-card .btn{width:100%;margin-top:8px}
   .form-note{text-align:center;font-size:12px;color:var(--muted);margin-top:14px}
+  .form-error{display:none;color:#c0392b;font-size:13px;font-weight:600;margin:0 0 12px;text-align:center}
+  .form-error.show{display:block}
   .form-success{display:none;background:#eaf6f0;border:1px solid #bfe3d2;color:var(--green-800);border-radius:11px;padding:18px;font-size:14.5px;font-weight:600;text-align:center}
   .form-success.show{display:block}
 
@@ -424,7 +426,9 @@
         </div>
         <div class="field"><label for="ic">Insurance Carrier (If Known)</label><input id="ic" name="carrier" placeholder="State Farm, Allstate, etc."></div>
         <div class="field"><label for="msg">Tell Us About Your Situation</label><textarea id="msg" name="message" placeholder="Briefly describe the damage and when it occurred..."></textarea></div>
-        <button type="submit" class="btn btn-gold">Submit &amp; Schedule Inspection</button>
+        <input type="text" name="company" id="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+        <p class="form-error" id="formError" role="alert"></p>
+        <button type="submit" class="btn btn-gold" id="formSubmit">Submit &amp; Schedule Inspection</button>
         <p class="form-note">No obligation. Your information is kept private.</p>
       </form>
       <div class="form-success" id="formSuccess">
@@ -470,12 +474,65 @@
     a.addEventListener('click', function(){ setMenu(false); });
   });
 
+  // ---- Inspection request form → Hall Legacy CRM (Supabase) ----
+  var SUPABASE_URL = 'https://wgvlgzvfldncdogslvng.supabase.co';
+  var SUPABASE_ANON_KEY = 'sb_publishable_dn5B53WCi1B1jVrFKmLObQ_oiWprn9I';
+
   var form = document.getElementById('inspectionForm');
+  var submitBtn = document.getElementById('formSubmit');
+  var errorEl = document.getElementById('formError');
+
+  function val(name){
+    var el = form.elements[name];
+    return el && el.value ? el.value.trim() : '';
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    errorEl.classList.remove('show');
     if(!form.checkValidity()){ form.reportValidity(); return; }
-    form.style.display='none';
-    document.getElementById('formSuccess').classList.add('show');
+
+    // Honeypot: if filled, silently "succeed" without sending.
+    if(val('company')){
+      form.style.display='none';
+      document.getElementById('formSuccess').classList.add('show');
+      return;
+    }
+
+    var payload = {
+      first_name: val('firstName'),
+      last_name: val('lastName') || null,
+      phone: val('phone') || null,
+      email: val('email') || null,
+      damage_type: val('damageType') || null,
+      insurance_carrier: val('carrier') || null,
+      message: val('message') || null,
+      status: 'new',
+      source: 'website'
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    fetch(SUPABASE_URL + '/rest/v1/leads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    }).then(function(res){
+      if(!res.ok) throw new Error('Request failed');
+      form.style.display='none';
+      document.getElementById('formSuccess').classList.add('show');
+    }).catch(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit & Schedule Inspection';
+      errorEl.textContent = 'Sorry — something went wrong. Please call (901) 659-3612 or try again.';
+      errorEl.classList.add('show');
+    });
   });
 </script>
 </body>
