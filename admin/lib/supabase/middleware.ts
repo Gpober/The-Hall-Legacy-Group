@@ -36,16 +36,24 @@ export async function updateSession(request: NextRequest) {
   const isPublicAsset =
     path.startsWith("/_next") || path === "/favicon.ico" || path.startsWith("/api/public");
 
-  if (!user && !isAuthRoute && !isPublicAsset) {
+  // When the app is reverse-proxied (e.g. thehalllegacygrp.com/admin -> this
+  // deployment), redirects must point back at the public host, not the raw
+  // Vercel deployment URL. Vercel forwards the original host in x-forwarded-host.
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const redirectTo = (pathname: string) => {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
+    if (forwardedHost) url.host = forwardedHost;
+    url.pathname = pathname;
+    url.search = "";
     return NextResponse.redirect(url);
+  };
+
+  if (!user && !isAuthRoute && !isPublicAsset) {
+    return redirectTo("/login");
   }
 
   if (user && isAuthRoute) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
+    return redirectTo("/");
   }
 
   return supabaseResponse;
