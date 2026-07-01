@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { submitLead } from "@/app/actions";
 
 export function Landing() {
@@ -8,6 +8,16 @@ export function Landing() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const year = new Date().getFullYear();
+
+  // Safety net: if an OAuth login lands on the homepage with ?code=... (because
+  // the provider redirected to the Site URL instead of the callback), forward
+  // it to the real callback so the session gets established.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("code") || params.has("error")) {
+      window.location.replace(`/admin/auth/callback${window.location.search}`);
+    }
+  }, []);
 
   const closeMenu = () => setMenuOpen(false);
 
