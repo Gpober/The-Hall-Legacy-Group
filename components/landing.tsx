@@ -270,6 +270,8 @@ export function Landing() {
             <a href="#services">Services</a>
             <a href="#why">Why Us</a>
             <a href="#contact">Free Inspection</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
           </div>
           <div>© {year} Hall Legacy Group. All rights reserved.</div>
         </div>
