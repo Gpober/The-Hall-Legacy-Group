@@ -3,8 +3,10 @@ import "./globals.css";
 import "./site.css";
 
 // Google Search Console verification token (URL-prefix / HTML-tag method).
-// Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in Vercel to the value Google gives.
-const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+// Public token (safe to commit); can be overridden via env var.
+const googleSiteVerification =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+  "naNXOn9bDd8K3s-fdTpriZSd_j55hhENzdu8TYrOg_Q";
 
 export const metadata: Metadata = {
   // Default (the CRM at the root) is not indexed; the marketing page overrides
