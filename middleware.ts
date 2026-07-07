@@ -26,12 +26,15 @@ export async function middleware(request: NextRequest) {
 
   // ---- Marketing (apex domain) ----
   if (isApex) {
-    // Gate everything except the gate page itself and API/actions.
-    if (
-      path !== "/enter" &&
-      !path.startsWith("/api") &&
-      (await gateBlocked(request))
-    ) {
+    // Public pages that stay reachable even when the site is password-gated
+    // (legal pages must be crawlable for Google OAuth verification).
+    const alwaysPublic =
+      path === "/enter" ||
+      path === "/privacy" ||
+      path === "/terms" ||
+      path.startsWith("/api");
+
+    if (!alwaysPublic && (await gateBlocked(request))) {
       const url = request.nextUrl.clone();
       url.pathname = "/enter";
       url.search = "";
@@ -45,7 +48,13 @@ export async function middleware(request: NextRequest) {
       return NextResponse.rewrite(url);
     }
     // Marketing-owned paths pass through; everything else is CRM -> subdomain.
-    if (path === "/site" || path === "/enter" || path.startsWith("/api")) {
+    if (
+      path === "/site" ||
+      path === "/enter" ||
+      path === "/privacy" ||
+      path === "/terms" ||
+      path.startsWith("/api")
+    ) {
       return NextResponse.next();
     }
     const dest = request.nextUrl.clone();
