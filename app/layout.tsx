@@ -2,12 +2,19 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./site.css";
 
+// Google Search Console verification token (URL-prefix / HTML-tag method).
+// Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION in Vercel to the value Google gives.
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+
 export const metadata: Metadata = {
   // Default (the CRM at the root) is not indexed; the marketing page overrides
   // this with indexable metadata.
   title: "Hall Legacy Group — CRM",
   description: "Internal CRM and lead management for Hall Legacy Group.",
   robots: { index: false, follow: false },
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
 };
 
 export default function RootLayout({
