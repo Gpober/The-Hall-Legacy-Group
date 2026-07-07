@@ -31,11 +31,11 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Middleware only runs for /admin/* (see matcher). The marketing site is public.
+  // Called for the CRM (admin subdomain / localhost / previews). The CRM lives
+  // at the app root here; /login and /auth/* are reachable while signed out.
   const path = request.nextUrl.pathname;
-  const isLoginRoute = path === "/admin/login";
-  // The OAuth callback must stay reachable while the user is still signed out.
-  const isAuthFlow = path.startsWith("/admin/auth");
+  const isLoginRoute = path === "/login";
+  const isAuthFlow = path.startsWith("/auth");
 
   const redirectTo = (pathname: string) => {
     const url = request.nextUrl.clone();
@@ -45,11 +45,11 @@ export async function updateSession(request: NextRequest) {
   };
 
   if (!user && !isLoginRoute && !isAuthFlow) {
-    return redirectTo("/admin/login");
+    return redirectTo("/login");
   }
 
   if (user && isLoginRoute) {
-    return redirectTo("/admin");
+    return redirectTo("/");
   }
 
   return supabaseResponse;

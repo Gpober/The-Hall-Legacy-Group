@@ -3,9 +3,11 @@ import "./globals.css";
 import "./site.css";
 
 export const metadata: Metadata = {
-  title: "Hall Legacy Group | Insurance Restoration Specialists",
-  description:
-    "Hall Legacy Group handles your insurance restoration from start to finish — working directly from your carrier's scope of work to restore your property to pre-loss condition with no out-of-pocket surprises.",
+  // Default (the CRM at the root) is not indexed; the marketing page overrides
+  // this with indexable metadata.
+  title: "Hall Legacy Group — CRM",
+  description: "Internal CRM and lead management for Hall Legacy Group.",
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({

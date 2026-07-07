@@ -46,7 +46,7 @@ export async function sendLeadNotification(lead: LeadNotice): Promise<void> {
     "Their situation:",
     lead.message || "—",
     "",
-    "View in CRM: https://thehalllegacygrp.com/admin/leads",
+    "View in CRM: https://admin.thehalllegacygrp.com/leads",
   ].join("\n");
 
   await transporter.sendMail({
