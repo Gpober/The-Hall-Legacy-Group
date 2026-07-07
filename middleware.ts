@@ -32,6 +32,7 @@ export async function middleware(request: NextRequest) {
       path === "/enter" ||
       path === "/privacy" ||
       path === "/terms" ||
+      path === "/app" ||
       path.startsWith("/api");
 
     if (!alwaysPublic && (await gateBlocked(request))) {
@@ -53,6 +54,7 @@ export async function middleware(request: NextRequest) {
       path === "/enter" ||
       path === "/privacy" ||
       path === "/terms" ||
+      path === "/app" ||
       path.startsWith("/api")
     ) {
       return NextResponse.next();
