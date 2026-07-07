@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { JOB_STAGES, JOB_STAGE_LABELS, type JobStage } from "@/lib/constants";
-import { updateJobStage } from "@/app/admin/(dashboard)/jobs/actions";
+import { updateJobStage } from "@/app/(dashboard)/jobs/actions";
 
 const FLOW: JobStage[] = [
   "inspection",

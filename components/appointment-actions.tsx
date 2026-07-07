@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   setAppointmentStatus,
   deleteAppointment,
-} from "@/app/admin/(dashboard)/calendar/actions";
+} from "@/app/(dashboard)/calendar/actions";
 
 export function AppointmentActions({
   id,

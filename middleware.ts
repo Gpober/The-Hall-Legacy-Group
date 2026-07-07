@@ -2,43 +2,66 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 import { GATE_COOKIE, gateToken } from "@/lib/gate";
 
-// Optional public-site password gate. Enabled only when SITE_PASSWORD is set.
-// Never gates /admin (own login), /enter (the gate itself), or OAuth returns.
-async function siteGate(request: NextRequest): Promise<NextResponse | null> {
+// Hosts
+function classifyHost(host: string) {
+  const h = host.toLowerCase().split(":")[0];
+  const isAdmin = h.startsWith("admin.");
+  const isApex = h === "thehalllegacygrp.com" || h === "www.thehalllegacygrp.com";
+  return { isAdmin, isApex, apexRoot: h.replace(/^www\./, "") };
+}
+
+// Public-site password gate (marketing only). Enabled when SITE_PASSWORD is set.
+async function gateBlocked(request: NextRequest): Promise<boolean> {
   const password = process.env.SITE_PASSWORD;
-  if (!password) return null;
-
-  const path = request.nextUrl.pathname;
-  if (
-    path.startsWith("/admin") ||
-    path.startsWith("/enter") ||
-    path.startsWith("/api") ||
-    request.nextUrl.searchParams.has("code") ||
-    request.nextUrl.searchParams.has("error")
-  ) {
-    return null;
-  }
-
+  if (!password) return false;
   const token = request.cookies.get(GATE_COOKIE)?.value;
   const expected = await gateToken(password);
-  if (token === expected) return null;
-
-  const url = request.nextUrl.clone();
-  url.pathname = "/enter";
-  url.search = "";
-  return NextResponse.redirect(url);
+  return token !== expected;
 }
 
 export async function middleware(request: NextRequest) {
-  const gate = await siteGate(request);
-  if (gate) return gate;
+  const host = request.headers.get("host") || "";
+  const { isAdmin, isApex, apexRoot } = classifyHost(host);
+  const path = request.nextUrl.pathname;
 
-  // Admin area keeps its own Supabase session handling + auth guard.
-  if (request.nextUrl.pathname.startsWith("/admin")) {
-    return await updateSession(request);
+  // ---- Marketing (apex domain) ----
+  if (isApex) {
+    // Gate everything except the gate page itself and API/actions.
+    if (
+      path !== "/enter" &&
+      !path.startsWith("/api") &&
+      (await gateBlocked(request))
+    ) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/enter";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+
+    // Serve the marketing page (app/site) at the root.
+    if (path === "/") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/site";
+      return NextResponse.rewrite(url);
+    }
+    // Marketing-owned paths pass through; everything else is CRM -> subdomain.
+    if (path === "/site" || path === "/enter" || path.startsWith("/api")) {
+      return NextResponse.next();
+    }
+    const dest = request.nextUrl.clone();
+    dest.host = `admin.${apexRoot}`;
+    return NextResponse.redirect(dest);
   }
 
-  return NextResponse.next();
+  // ---- CRM (admin subdomain, localhost, and preview deployments) ----
+  // If an OAuth code lands anywhere but the callback, forward it there.
+  const sp = request.nextUrl.searchParams;
+  if ((sp.has("code") || sp.has("error")) && !path.startsWith("/auth")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/callback";
+    return NextResponse.redirect(url);
+  }
+  return await updateSession(request);
 }
 
 export const config = {

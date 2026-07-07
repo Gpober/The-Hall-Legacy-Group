@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { LEAD_STATUSES, LEAD_STATUS_LABELS, type LeadStatus } from "@/lib/constants";
-import { updateLeadStatus } from "@/app/admin/(dashboard)/leads/actions";
+import { updateLeadStatus } from "@/app/(dashboard)/leads/actions";
 
 export function LeadStatusSelect({
   leadId,

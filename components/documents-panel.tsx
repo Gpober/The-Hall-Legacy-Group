@@ -8,7 +8,7 @@ import {
   DOC_CATEGORY_LABELS,
   type DocCategory,
 } from "@/lib/constants";
-import { addDocument, deleteDocument, getSignedUrl } from "@/app/admin/(dashboard)/documents/actions";
+import { addDocument, deleteDocument, getSignedUrl } from "@/app/(dashboard)/documents/actions";
 import type { DocumentRow } from "@/lib/types";
 
 function fileSize(bytes: number | null): string {

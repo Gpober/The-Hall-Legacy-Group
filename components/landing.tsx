@@ -15,7 +15,7 @@ export function Landing() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.has("code") || params.has("error")) {
-      window.location.replace(`/admin/auth/callback${window.location.search}`);
+      window.location.replace(`/auth/callback${window.location.search}`);
     }
   }, []);
 

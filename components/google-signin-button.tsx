@@ -14,7 +14,7 @@ export function GoogleSignInButton() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/admin/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/callback`,
         // Request Calendar access (for appointment sync) with offline access so
         // Google issues a refresh token on first consent. No prompt=consent, so
         // returning users aren't asked to approve again every time.
