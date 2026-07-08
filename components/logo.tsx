@@ -1,4 +1,10 @@
-export function Logo({ dark = false }: { dark?: boolean }) {
+export function Logo({
+  dark = false,
+  showTagline = true,
+}: {
+  dark?: boolean;
+  showTagline?: boolean;
+}) {
   return (
     <div className="flex items-center gap-3">
       <span
@@ -16,13 +22,15 @@ export function Logo({ dark = false }: { dark?: boolean }) {
         >
           HALL LEGACY GROUP
         </span>
-        <span
-          className={`block text-[9px] font-semibold tracking-[0.28em] ${
-            dark ? "text-zinc-400" : "text-white/50"
-          }`}
-        >
-          INSURANCE RESTORATION
-        </span>
+        {showTagline && (
+          <span
+            className={`block text-[9px] font-semibold tracking-[0.28em] ${
+              dark ? "text-zinc-400" : "text-white/50"
+            }`}
+          >
+            INSURANCE RESTORATION
+          </span>
+        )}
       </span>
     </div>
   );
