@@ -15,7 +15,7 @@ export default function EnterPage({
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-850 via-brand-900 to-brand-950 px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex justify-center">
-          <Logo />
+          <Logo showTagline={false} />
         </div>
         <div className="card p-8">
           <h1 className="font-serif text-2xl font-extrabold text-zinc-900">
