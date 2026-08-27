@@ -28,7 +28,7 @@ export function Logo({
               dark ? "text-zinc-400" : "text-white/50"
             }`}
           >
-            INSURANCE RESTORATION
+            PROPERTY RESTORATION
           </span>
         )}
       </span>

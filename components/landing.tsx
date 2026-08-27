@@ -62,7 +62,7 @@ export function Landing() {
             <span className="logo-badge">HLG</span>
             <span className="brand-text">
               <strong>HALL LEGACY GROUP</strong>
-              <span>INSURANCE RESTORATION</span>
+              <span>PROPERTY RESTORATION</span>
             </span>
           </a>
           <div className="nav-right">
@@ -90,7 +90,7 @@ export function Landing() {
       {/* ===== Hero ===== */}
       <section className="hero" id="top">
         <div className="wrap hero-inner">
-          <span className="eyebrow">Insurance Restoration Specialists</span>
+          <span className="eyebrow">Property Restoration Specialists</span>
           <h1>We Handle<br />the <span className="accent">Insurance.</span><br />We Fix Your Home.</h1>
           <p>After a loss, navigating your insurance claim shouldn&apos;t be another burden. Hall Legacy Group works directly from your carrier&apos;s scope of work — restoring your property to pre-loss condition, no shortcuts.</p>
           <div className="hero-cta">
@@ -262,7 +262,7 @@ export function Landing() {
             <span className="logo-badge">HLG</span>
             <span className="brand-text">
               <strong>HALL LEGACY GROUP</strong>
-              <span>INSURANCE RESTORATION</span>
+              <span>PROPERTY RESTORATION</span>
             </span>
           </a>
           <div className="foot-links">

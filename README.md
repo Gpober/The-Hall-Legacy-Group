@@ -4,7 +4,7 @@ One **Next.js (App Router)** app that serves both the public marketing website
 and the internal CRM, backed by **Supabase** (Postgres, Auth, Storage) and
 styled with Tailwind in the Hall Legacy green/gold brand.
 
-- **`/`** — marketing website (insurance restoration landing page)
+- **`/`** — marketing website (property restoration landing page)
 - **`/admin`** — CRM backend (auth-protected)
 
 Deployed as a single Vercel project: `thehalllegacygrp.com` and

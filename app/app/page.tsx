@@ -15,7 +15,7 @@ export default function AppInfoPage() {
         <p>
           Hall Legacy Group operates a private, web-based CRM (customer
           relationship management) application that our team uses to run our
-          insurance-restoration business. Staff use it to manage inspection
+          property-restoration business. Staff use it to manage inspection
           requests submitted on our website, customer records, restoration jobs,
           and appointments. The application is hosted at{" "}
           <strong>admin.thehalllegacygrp.com</strong> and is restricted to

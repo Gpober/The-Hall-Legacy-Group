@@ -37,7 +37,7 @@ export default function PrivacyPage() {
         <p>We use the information we collect to:</p>
         <ul className="list-disc space-y-1 pl-6">
           <li>Respond to inquiries and schedule inspections;</li>
-          <li>Provide insurance restoration services and coordinate your claim;</li>
+          <li>Provide property restoration services and coordinate your claim;</li>
           <li>Create and manage appointments on our staff&rsquo;s calendars;</li>
           <li>Operate, maintain, and improve our services.</li>
         </ul>
