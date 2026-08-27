@@ -22,7 +22,7 @@ export function LegalShell({
                 HALL LEGACY GROUP
               </span>
               <span className="block text-[9px] font-semibold tracking-[0.28em] text-white/50">
-                INSURANCE RESTORATION
+                PROPERTY RESTORATION
               </span>
             </span>
           </Link>

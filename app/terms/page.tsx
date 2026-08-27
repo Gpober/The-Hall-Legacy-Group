@@ -18,8 +18,8 @@ export default function TermsPage() {
 
       <LegalSection heading="Our Services">
         <p>
-          Hall Legacy Group provides insurance restoration services, including
-          inspections, claim coordination, and property restoration. Information
+          Hall Legacy Group provides property restoration services, including
+          inspections, claim coordination, and restoration work. Information
           on our website is for general purposes and does not constitute a
           binding offer or a guarantee of any specific outcome with your
           insurance carrier.
