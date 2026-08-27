@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
-import { GATE_COOKIE, gateToken } from "@/lib/gate";
 
 // Hosts
 function classifyHost(host: string) {
@@ -10,38 +9,14 @@ function classifyHost(host: string) {
   return { isAdmin, isApex, apexRoot: h.replace(/^www\./, "") };
 }
 
-// Public-site password gate (marketing only). Enabled when SITE_PASSWORD is set.
-async function gateBlocked(request: NextRequest): Promise<boolean> {
-  const password = process.env.SITE_PASSWORD;
-  if (!password) return false;
-  const token = request.cookies.get(GATE_COOKIE)?.value;
-  const expected = await gateToken(password);
-  return token !== expected;
-}
-
 export async function middleware(request: NextRequest) {
   const host = request.headers.get("host") || "";
   const { isAdmin, isApex, apexRoot } = classifyHost(host);
   const path = request.nextUrl.pathname;
 
   // ---- Marketing (apex domain) ----
+  // The public site is open to everyone; there is no password gate.
   if (isApex) {
-    // Public pages that stay reachable even when the site is password-gated
-    // (legal pages must be crawlable for Google OAuth verification).
-    const alwaysPublic =
-      path === "/enter" ||
-      path === "/privacy" ||
-      path === "/terms" ||
-      path === "/app" ||
-      path.startsWith("/api");
-
-    if (!alwaysPublic && (await gateBlocked(request))) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/enter";
-      url.search = "";
-      return NextResponse.redirect(url);
-    }
-
     // Serve the marketing page (app/site) at the root.
     if (path === "/") {
       const url = request.nextUrl.clone();
@@ -51,7 +26,6 @@ export async function middleware(request: NextRequest) {
     // Marketing-owned paths pass through; everything else is CRM -> subdomain.
     if (
       path === "/site" ||
-      path === "/enter" ||
       path === "/privacy" ||
       path === "/terms" ||
       path === "/app" ||
