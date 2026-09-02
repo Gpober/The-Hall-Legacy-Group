@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { submitLead } from "@/app/actions";
+import { SiteHeader, SiteFooter } from "@/components/site-nav";
 
 export function Landing() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
-  const year = new Date().getFullYear();
 
   // Safety net: if an OAuth login lands on the homepage with ?code=... (because
   // the provider redirected to the Site URL instead of the callback), forward
@@ -19,7 +18,6 @@ export function Landing() {
     }
   }, []);
 
-  const closeMenu = () => setMenuOpen(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -55,37 +53,7 @@ export function Landing() {
 
   return (
     <div className="hlg-site">
-      {/* ===== Header ===== */}
-      <header className={menuOpen ? "open" : undefined}>
-        <div className="wrap nav">
-          <a className="brand" href="#top">
-            <span className="logo-badge">HLG</span>
-            <span className="brand-text">
-              <strong>HALL LEGACY GROUP</strong>
-              <span>PROPERTY RESTORATION</span>
-            </span>
-          </a>
-          <div className="nav-right">
-            <nav className="nav-links" id="navMenu">
-              <a href="#process" onClick={closeMenu}>Our Process</a>
-              <a href="#services" onClick={closeMenu}>Services</a>
-              <a href="#why" onClick={closeMenu}>Why Us</a>
-              <a href="#contact" onClick={closeMenu}>Contact</a>
-              <a href="#contact" className="btn btn-gold menu-cta" onClick={closeMenu}>Free Inspection</a>
-            </nav>
-            <a href="#contact" className="btn btn-gold desktop-cta">Free Inspection</a>
-            <button
-              className="menu-toggle"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              aria-controls="navMenu"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              <span></span><span></span><span></span>
-            </button>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* ===== Hero ===== */}
       <section className="hero" id="top">
@@ -133,6 +101,9 @@ export function Landing() {
               <div className="step"><div className="n">2</div><div><h3>Insurance Claim Support</h3><p>We work alongside your adjuster, reviewing the scope of work line by line to ensure nothing gets missed.</p></div></div>
               <div className="step"><div className="n">3</div><div><h3>Scope-Based Restoration</h3><p>Once approved, we execute exactly to the carrier&apos;s scope — licensed crews, quality materials, zero shortcuts.</p></div></div>
               <div className="step"><div className="n">4</div><div><h3>Final Walkthrough</h3><p>We don&apos;t consider the job done until you do. We walk through every item and confirm your satisfaction.</p></div></div>
+              <a href="/process" className="btn btn-green" style={{ alignSelf: "flex-start" }}>
+                See the Full Process &amp; Before/Afters
+              </a>
             </div>
             <div className="why" id="why">
               <span className="eyebrow" style={{ color: "var(--gold-soft)" }}>Why It Matters</span>
@@ -255,27 +226,7 @@ export function Landing() {
         </div>
       </section>
 
-      {/* ===== Footer ===== */}
-      <footer>
-        <div className="wrap foot">
-          <a className="brand" href="#top">
-            <span className="logo-badge">HLG</span>
-            <span className="brand-text">
-              <strong>HALL LEGACY GROUP</strong>
-              <span>PROPERTY RESTORATION</span>
-            </span>
-          </a>
-          <div className="foot-links">
-            <a href="#process">Our Process</a>
-            <a href="#services">Services</a>
-            <a href="#why">Why Us</a>
-            <a href="#contact">Free Inspection</a>
-            <a href="/privacy">Privacy</a>
-            <a href="/terms">Terms</a>
-          </div>
-          <div>© {year} Hall Legacy Group. All rights reserved.</div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
