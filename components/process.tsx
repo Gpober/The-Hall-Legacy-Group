@@ -31,8 +31,8 @@ const STAGES: {
       "Before anything is touched, we document the loss the way an adjuster needs to see it — the source of the water, every affected room, and the pre-loss condition of the finishes we are going to be responsible for putting back.",
     note: "Photographed on arrival, before any demolition. This is what supports your claim later.",
     shots: [
-      { src: "/process/inspect-source.jpg", caption: "Source of loss under the sink" },
-      { src: "/process/inspect-bath-before.jpg", caption: "Pre-loss condition recorded" },
+      { src: "/process/seq-bath-1-before.jpg", caption: "Pre-loss condition recorded" },
+      { src: "/process/seq-roof-1-before.jpg", caption: "Aerial inspection before work starts" },
     ],
   },
   {
@@ -55,7 +55,7 @@ const STAGES: {
       { src: "/process/demo-floodcut.jpg", caption: "Flood cut at the moisture line" },
       { src: "/process/demo-subfloor.jpg", caption: "Damage found beneath the boards" },
       { src: "/process/demo-bath-tile.jpg", caption: "Tile opened to trace the leak" },
-      { src: "/process/demo-bath-studs.jpg", caption: "Bath taken back to framing" },
+      { src: "/process/demo-bath-tub.jpg", caption: "Original tub coming out" },
     ],
   },
   {
@@ -65,7 +65,7 @@ const STAGES: {
       "Exposed framing and subfloor are cleaned and treated with an antimicrobial before a single piece of new material goes back. Nothing gets closed up until the cavity is dry, treated, and inspected.",
     shots: [
       { src: "/process/treat-antimicrobial.jpg", caption: "Antimicrobial applied to framing" },
-      { src: "/process/treat-framing.jpg", caption: "Dried and cleared, ready to rebuild" },
+      { src: "/process/treat-framing.jpg", caption: "Shower drain set in a cleared floor" },
     ],
   },
   {
@@ -114,6 +114,15 @@ const SEQUENCES: {
     before: { src: "/process/seq-roof-1-before.jpg", when: "Inspection — January 14" },
     demo: { src: "/process/seq-roof-2-demo.jpg", when: "Stripped to deck — February 4" },
     after: { src: "/process/seq-roof-3-after.jpg", when: "Completed — February 9" },
+  },
+  {
+    meta: "Bathroom · tub-to-shower conversion",
+    title: "A damaged tub surround became a walk-in shower",
+    body:
+      "Water behind the tile meant the surround had to come out, so the homeowner asked us to take the tub with it and put in a walk-in shower. The room went back to bare framing, the drain was reset for the new pan, and it came back as an accessible shower with grab bars, new tile, and a new floor.",
+    before: { src: "/process/seq-bath-1-before.jpg", when: "Before — original tub and tile" },
+    demo: { src: "/process/seq-bath-2-demo.jpg", when: "Demo — tub out, back to framing" },
+    after: { src: "/process/seq-bath-3-after.jpg", when: "Finished — walk-in shower" },
   },
   {
     meta: "Water damage · flooring replacement",
