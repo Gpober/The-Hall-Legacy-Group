@@ -26,6 +26,7 @@ export async function middleware(request: NextRequest) {
     // Marketing-owned paths pass through; everything else is CRM -> subdomain.
     if (
       path === "/site" ||
+      path === "/process" ||
       path === "/privacy" ||
       path === "/terms" ||
       path === "/app" ||
