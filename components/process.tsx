@@ -32,8 +32,7 @@ const STAGES: {
     note: "Photographed on arrival, before any demolition. This is what supports your claim later.",
     shots: [
       { src: "/process/inspect-source.jpg", caption: "Source of loss under the sink" },
-      { src: "/process/inspect-bath.jpg", caption: "Pre-loss condition recorded" },
-      { src: "/process/bath-before.jpg", caption: "Finishes documented room by room" },
+      { src: "/process/inspect-bath-before.jpg", caption: "Pre-loss condition recorded" },
     ],
   },
   {
@@ -55,8 +54,8 @@ const STAGES: {
     shots: [
       { src: "/process/demo-floodcut.jpg", caption: "Flood cut at the moisture line" },
       { src: "/process/demo-subfloor.jpg", caption: "Damage found beneath the boards" },
-      { src: "/process/demo-floor.jpg", caption: "Flooring taken to subfloor" },
-      { src: "/process/demo-bath-studs.jpg", caption: "Bath opened to framing" },
+      { src: "/process/demo-bath-tile.jpg", caption: "Tile opened to trace the leak" },
+      { src: "/process/demo-bath-studs.jpg", caption: "Bath taken back to framing" },
     ],
   },
   {
@@ -76,7 +75,6 @@ const STAGES: {
       "Decking, framing, and flooring are repaired before finishes go on. On roofs that means tearing off to the deck, replacing anything soft, and rebuilding the system properly. On floors it means weaving new boards into the existing run so the repair disappears.",
     shots: [
       { src: "/process/repair-decking.jpg", caption: "Torn off to bare decking" },
-      { src: "/process/roof-aerial-during.jpg", caption: "Decked and dried in" },
       { src: "/process/repair-shingles.jpg", caption: "New roof system going on" },
       { src: "/process/repair-hardwood.jpg", caption: "New boards woven into the floor" },
     ],
@@ -88,45 +86,73 @@ const STAGES: {
       "Finishes, flooring, paint, and trim go back to the carrier's scope — and we walk every room with you before we call it done. If something on the list is not right, it is not finished.",
     note: "We do not consider the job complete until you have walked it and agreed it is complete.",
     shots: [
+      { src: "/process/rebuild-restroom.jpg", caption: "Restroom finished and back in service" },
+      { src: "/process/rebuild-restroom-2.jpg", caption: "New vanity, tile, and fixtures" },
       { src: "/process/rebuild-kitchen.jpg", caption: "Kitchen rebuilt and cleaned" },
-      { src: "/process/rebuild-interior.jpg", caption: "New flooring and finished paint" },
       { src: "/process/rebuild-exterior.jpg", caption: "Handed back to the homeowner" },
     ],
   },
 ];
 
-const PAIRS: {
+// A job runs Before -> Demo -> After. Where we have the middle frame we show all
+// three, because the demo shot is what explains why the finished room looks the
+// way it does. Two-frame jobs simply omit `demo`.
+type Frame = { src: string; when: string };
+const SEQUENCES: {
   meta: string;
   title: string;
   body: string;
-  before: { src: string; when: string };
-  after: { src: string; when: string };
+  before: Frame;
+  demo?: Frame;
+  after: Frame;
 }[] = [
   {
     meta: "Roof replacement · aerial",
     title: "Storm-damaged roof, replaced in under four weeks",
     body:
-      "Drone documentation from the inspection through to the finished roof. The same home, photographed from the same approach: a worn, failing roof in January, and a complete new system by early February.",
-    before: { src: "/process/roof-aerial-before.jpg", when: "Inspection — January 14" },
-    after: { src: "/process/roof-aerial-after.jpg", when: "Completed — February 9" },
+      "Drone documentation from the inspection through to the finished roof. The same home from the same approach: a worn, failing roof in January, stripped to the deck and dried in, and a complete new system by early February.",
+    before: { src: "/process/seq-roof-1-before.jpg", when: "Inspection — January 14" },
+    demo: { src: "/process/seq-roof-2-demo.jpg", when: "Stripped to deck — February 4" },
+    after: { src: "/process/seq-roof-3-after.jpg", when: "Completed — February 9" },
+  },
+  {
+    meta: "Water damage · flooring replacement",
+    title: "From water-damaged hardwood to a finished room",
+    body:
+      "The original hardwood had water under the finish and rot in the boards beneath it. Everything affected came out, the subfloor was repaired and treated, and the room went back with new carpet, fresh paint, and clean trim.",
+    before: { src: "/process/seq-floor-1-before.jpg", when: "Before — original hardwood" },
+    demo: { src: "/process/seq-floor-2-demo.jpg", when: "Demo — damaged flooring out" },
+    after: { src: "/process/seq-floor-3-after.jpg", when: "Finished — new carpet and paint" },
   },
   {
     meta: "Roof replacement · one day on site",
     title: "Tear-off in the morning, dried in by dusk",
     body:
       "A full residential tear-off and replacement start to finish in a single day. Left: the crew stripping the old roof to the deck. Right: the same house that evening with the new roof on and the site cleaned up.",
-    before: { src: "/process/roof-street-before.jpg", when: "Tear-off underway" },
-    after: { src: "/process/roof-street-after.jpg", when: "Same day, dried in" },
-  },
-  {
-    meta: "Water damage · hardwood flooring",
-    title: "Water-damaged hardwood brought back",
-    body:
-      "The same home, two rooms. Left: original hardwood lifted and stripped after water got under the finish. Right: the restored floor in the adjoining room — repaired, refinished, and back in service rather than replaced.",
-    before: { src: "/process/floors-before.jpg", when: "Damaged flooring removed" },
-    after: { src: "/process/floors-after.jpg", when: "Restored and refinished" },
+    before: { src: "/process/seq-street-1-before.jpg", when: "Tear-off underway" },
+    after: { src: "/process/seq-street-2-after.jpg", when: "Same day, dried in" },
   },
 ];
+
+function BaFrame({
+  frame,
+  tag,
+  kind,
+  title,
+}: {
+  frame: Frame;
+  tag: string;
+  kind: "before" | "demo" | "after";
+  title: string;
+}) {
+  return (
+    <div className="ba-frame">
+      <span className={`ba-tag ${kind}`}>{tag}</span>
+      <img src={frame.src} alt={`${tag} — ${title}`} loading="lazy" />
+      <div className="ba-when">{frame.when}</div>
+    </div>
+  );
+}
 
 export function Process() {
   return (
@@ -177,35 +203,30 @@ export function Process() {
         </div>
       </section>
 
-      {/* ===== Before & after ===== */}
+      {/* ===== Before / Demo / After ===== */}
       <section className="ba section" id="before-after">
         <div className="wrap">
           <div className="process-head">
-            <span className="eyebrow dark">Before &amp; After</span>
+            <span className="eyebrow dark">Before, Demo &amp; After</span>
             <h2>
               The Same Property, <span className="accent">Put Back Right.</span>
             </h2>
             <div className="rule"></div>
           </div>
           <div className="ba-list">
-            {PAIRS.map((p) => (
-              <article className="ba-item" key={p.title}>
-                <div className="ba-pair">
-                  <div className="ba-frame">
-                    <span className="ba-tag before">Before</span>
-                    <img src={p.before.src} alt={`Before — ${p.title}`} loading="lazy" />
-                    <div className="ba-when">{p.before.when}</div>
-                  </div>
-                  <div className="ba-frame">
-                    <span className="ba-tag after">After</span>
-                    <img src={p.after.src} alt={`After — ${p.title}`} loading="lazy" />
-                    <div className="ba-when">{p.after.when}</div>
-                  </div>
+            {SEQUENCES.map((s) => (
+              <article className="ba-item" key={s.title}>
+                <div className={s.demo ? "ba-pair three" : "ba-pair"}>
+                  <BaFrame frame={s.before} tag="Before" kind="before" title={s.title} />
+                  {s.demo && (
+                    <BaFrame frame={s.demo} tag="Demo" kind="demo" title={s.title} />
+                  )}
+                  <BaFrame frame={s.after} tag="After" kind="after" title={s.title} />
                 </div>
                 <div className="ba-body">
-                  <span className="ba-meta">{p.meta}</span>
-                  <h3>{p.title}</h3>
-                  <p>{p.body}</p>
+                  <span className="ba-meta">{s.meta}</span>
+                  <h3>{s.title}</h3>
+                  <p>{s.body}</p>
                 </div>
               </article>
             ))}
