@@ -93,8 +93,25 @@ html { scroll-behavior: smooth; }
   content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 39.5H40M39.5 0V40' stroke='%23ffffff' stroke-opacity='0.04'/%3E%3C/svg%3E");
 }
-.hlg-site .hero-inner{position:relative;z-index:2;padding:96px 0 110px;max-width:760px}
-.hlg-site .hero h1{font-size:clamp(44px,7vw,84px);font-weight:800;margin:24px 0 26px}
+.hlg-site .hero-inner{
+  position:relative;z-index:2;padding:96px 24px 110px;max-width:var(--maxw);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:60px;align-items:center;
+}
+.hlg-site .hero-copy{max-width:700px}
+/* The source photo is small, so the frame is capped at a width it can carry
+   rather than stretched across the column. */
+.hlg-site .hero-photo{
+  justify-self:end;width:100%;max-width:380px;position:relative;
+  border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 40px 70px -30px rgba(0,0,0,.65);
+}
+.hlg-site .hero-photo img{width:100%;height:auto}
+.hlg-site .hero-photo figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:28px 14px 11px;
+  background:linear-gradient(to top,rgba(7,42,29,.92),transparent);
+  color:#fff;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+}
+.hlg-site .hero h1{font-size:clamp(44px,5.6vw,72px);font-weight:800;margin:24px 0 26px}
 .hlg-site .hero h1 .accent{color:var(--gold-bright)}
 .hlg-site .hero p{font-size:18px;color:rgba(255,255,255,.78);max-width:560px;margin-bottom:38px}
 .hlg-site .hero-cta{display:flex;flex-wrap:wrap;gap:16px}
@@ -199,6 +216,8 @@ html { scroll-behavior: smooth; }
 
 /* ---------- Responsive ---------- */
 @media(max-width:900px){
+  .hlg-site .hero-inner{grid-template-columns:1fr;gap:38px}
+  .hlg-site .hero-photo{justify-self:start;max-width:340px}
   .hlg-site .menu-toggle{display:flex}
   .hlg-site .desktop-cta{display:none}
   .hlg-site .menu-cta{display:inline-flex}
@@ -225,7 +244,8 @@ html { scroll-behavior: smooth; }
   .hlg-site .cards{grid-template-columns:1fr}
   .hlg-site .row2{grid-template-columns:1fr}
   .hlg-site .section{padding:62px 0}
-  .hlg-site .hero-inner{padding:60px 0 72px}
+  .hlg-site .hero-inner{padding:60px 18px 72px}
+  .hlg-site .hero-photo{max-width:none}
   .hlg-site .hero h1{font-size:clamp(36px,11vw,52px)}
   .hlg-site .hero p{font-size:16.5px}
   .hlg-site .hero-cta{flex-direction:column;align-items:stretch}

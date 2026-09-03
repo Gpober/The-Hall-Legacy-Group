@@ -58,13 +58,22 @@ export function Landing() {
       {/* ===== Hero ===== */}
       <section className="hero" id="top">
         <div className="wrap hero-inner">
-          <span className="eyebrow">Property Restoration Specialists</span>
-          <h1>We Handle<br />the <span className="accent">Insurance.</span><br />We Fix Your Home.</h1>
-          <p>After a loss, navigating your insurance claim shouldn&apos;t be another burden. Hall Legacy Group works directly from your carrier&apos;s scope of work — restoring your property to pre-loss condition, no shortcuts.</p>
-          <div className="hero-cta">
-            <a href="#contact" className="btn btn-gold">Get a Free Inspection</a>
-            <a href="#services" className="btn btn-outline">Our Services</a>
+          <div className="hero-copy">
+            <span className="eyebrow">Property Restoration Specialists</span>
+            <h1>We Handle<br />the <span className="accent">Insurance.</span><br />We Fix Your Home.</h1>
+            <p>After a loss, navigating your insurance claim shouldn&apos;t be another burden. Hall Legacy Group works directly from your carrier&apos;s scope of work — restoring your property to pre-loss condition, no shortcuts.</p>
+            <div className="hero-cta">
+              <a href="#contact" className="btn btn-gold">Get a Free Inspection</a>
+              <a href="#services" className="btn btn-outline">Our Services</a>
+            </div>
           </div>
+          <figure className="hero-photo">
+            <img
+              src="/home/restored-home.jpg"
+              alt="A completed Hall Legacy Group restoration, handed back to the homeowners"
+            />
+            <figcaption>Restored and handed back</figcaption>
+          </figure>
         </div>
       </section>
 
