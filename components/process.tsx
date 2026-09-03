@@ -91,7 +91,6 @@ const STAGES: {
       { src: "/process/rebuild-living.jpg", caption: "Living areas back in service" },
       { src: "/process/rebuild-kitchen.jpg", caption: "Kitchen rebuilt and cleaned" },
       { src: "/process/rebuild-interior.jpg", caption: "New flooring and finished paint" },
-      { src: "/process/rebuild-exterior.jpg", caption: "Handed back to the homeowner" },
     ],
   },
 ];
