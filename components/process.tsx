@@ -88,7 +88,9 @@ const STAGES: {
     shots: [
       { src: "/process/rebuild-restroom.jpg", caption: "Restroom finished and back in service" },
       { src: "/process/rebuild-restroom-2.jpg", caption: "New vanity, tile, and fixtures" },
+      { src: "/process/rebuild-living.jpg", caption: "Living areas back in service" },
       { src: "/process/rebuild-kitchen.jpg", caption: "Kitchen rebuilt and cleaned" },
+      { src: "/process/rebuild-interior.jpg", caption: "New flooring and finished paint" },
       { src: "/process/rebuild-exterior.jpg", caption: "Handed back to the homeowner" },
     ],
   },
@@ -126,12 +128,20 @@ const SEQUENCES: {
   },
   {
     meta: "Water damage · flooring replacement",
-    title: "From water-damaged hardwood to a finished room",
+    title: "Water-damaged hardwood, replaced through the home",
     body:
-      "The original hardwood had water under the finish and rot in the boards beneath it. Everything affected came out, the subfloor was repaired and treated, and the room went back with new carpet, fresh paint, and clean trim.",
+      "The original hardwood had water under the finish and rot in the boards beneath it. The affected flooring came out room by room — the hallway worst of all — and once the subfloor was repaired and treated the home went back with new carpet. The demo and finished frames are the same hallway.",
     before: { src: "/process/seq-floor-1-before.jpg", when: "Before — original hardwood" },
-    demo: { src: "/process/seq-floor-2-demo.jpg", when: "Demo — damaged flooring out" },
-    after: { src: "/process/seq-floor-3-after.jpg", when: "Finished — new carpet and paint" },
+    demo: { src: "/process/seq-floor-2-demo.jpg", when: "Demo — hallway boards out" },
+    after: { src: "/process/seq-floor-3-after.jpg", when: "Finished — hallway carpeted" },
+  },
+  {
+    meta: "Kitchen · flooring and rebuild",
+    title: "A kitchen stripped to subfloor, put back complete",
+    body:
+      "Water took this kitchen floor down to bare subfloor. The room was dried, the substrate repaired, and it went back with new plank flooring — the same doorway and the same cabinet run, finished and cleaned before handover.",
+    before: { src: "/process/seq-kitchen-1-before.jpg", when: "Before — stripped to subfloor" },
+    after: { src: "/process/seq-kitchen-2-after.jpg", when: "Finished — new plank flooring" },
   },
   {
     meta: "Roof replacement · one day on site",
